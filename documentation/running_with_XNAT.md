@@ -7,6 +7,13 @@ Please follow these steps to set up XNAT, import data, and enable container serv
 2. [Create a project](https://wiki.xnat.org/documentation/how-to-use-xnat/creating-and-managing-projects)
 3. [Import data](https://wiki.xnat.org/documentation/how-to-use-xnat/image-session-upload-methods-in-xnat)
 4. [Container service administration](https://wiki.xnat.org/container-service/container-service-administration-122978855.html)
+#### Latest versions tested:  
+As of Jan 2022, this software has been tested on:
+* XNAT version 1.8.2.2, build: 4
+* Container Service Plugin 3.1.0
+* Batch Launch Plugin 0.5.0
+* XNAT OHIF Plugin 3.1.0
+
 #### 1.2. Pulling and enabling containers
 Once container service is set up, [pull the following docker images](https://wiki.xnat.org/container-service/pulling-a-container-image-126156950.html) to XNAT:
 * `satrajit2012/nrg_ai_neuroonco_preproc:v0`
@@ -45,7 +52,8 @@ Now when we run this orchestrator on a session, it runs `1-Scan-type Classifier`
 Note: When orchestration is enabled, the first command in the orchestrator will launch the entire orchestration process. For example, in the above example, our first command is `1-Scan-type Classifier`. So note that when orchestration is enabled, launching `1-Scan-type Classifier` will launch not just this command but the entire associated orchestration. If you want to turn this off and want to run only `1-Scan-type Classifier`, you can disable orchestration on a project level by selecting Command Orchestration &#8594; "No orchestration" radio-button (as described [here](https://wiki.xnat.org/container-service/add-command-orchestration-to-your-project-132415533.html#:~:text=To%20remove%20an%20orchestration%20from%20your%20project%2C%20select%20the%20radio%20button%20next%20to%20%22No%20orchestration.%22))
 
 #### 2.4. Automatically run multiple containers on multiple sessions
-Finally, by combining XNAT's batch-launch and command orchestration features, we can achieve the highest level of automation in running containers. In this mode, we leverage command orchestration to combine all the desired commands into a single automated flow and batch-launch to bulk-launch the entire flow on multiple user-selected sessions (or all sessions in a project). To achieve this, simply curate the desired orchestration as described in [Automatically run multiple containers on single session](#orchestration)
+Finally, by combining XNAT's batch-launch and command orchestration features, we can achieve the highest level of automation in running containers. In this mode, we leverage command orchestration to combine all the desired commands into a single automated flow and batch-launch to bulk-launch the entire flow on multiple user-selected sessions (or all sessions in a project). To achieve this, simply curate the desired orchestration as described in Section 2.3 and bulk-launch it as per the instructions in Section 2.2.
+### 3. Retrieving results from XNAT
 
 
 
