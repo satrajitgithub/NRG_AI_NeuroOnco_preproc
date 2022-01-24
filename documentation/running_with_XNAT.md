@@ -35,7 +35,7 @@ Note that in this step you need to launch each command manually one after other.
 
 #### 2.2. Manually run single container on multiple sessions
 In a dataset containing a large number of sessions, it is often necessary to launch a particular command on multiple sessions. This is where [XNAT's Batch Launch Plugin](https://wiki.xnat.org/xnat-tools/batch-launch-plugin) can be particularly useful. Once the Batch Launch Plugin is [installed](https://wiki.xnat.org/xnat-tools/batch-launch-plugin#:~:text=Installing%20the%20Batch%20Launch%20Plugin), you can follow the steps detailed here to bulk-launch a command on session-level: [Using the Batch Launch Plugin with the Container Service](https://wiki.xnat.org/xnat-tools/batch-launch-plugin/using-the-batch-launch-plugin-with-the-container-service). <br />
-![](C:\NRG\NRG_AI_Neuroonco_preproc\documentation\figures\batch-launch.gif)
+![](figures/batch-launch.gif)
 Once bulk processing has finished, the Processing Dashboard lists the outcome (Complete/Failed/Ready) as a sortable column which can be used to additionally inspect the results.
 #### 2.3. Automatically run multiple containers on single session
 In this step, we will take advantage of XNAT's [Command Orchestration](https://wiki.xnat.org/container-service/set-up-command-orchestration-130515311.html)
