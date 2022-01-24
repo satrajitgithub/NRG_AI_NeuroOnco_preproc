@@ -1,4 +1,4 @@
-# Running on XNAT (preferred)
+# Running on XNAT
 ### 1. Installation and Requirements
 #### 1.1. XNAT setup
 Please follow these steps to set up XNAT, import data, and enable container service:
@@ -52,7 +52,6 @@ Note: When orchestration is enabled, the first command in the orchestrator will 
 
 #### 2.4. Automatically run multiple containers on multiple sessions
 Finally, by combining XNAT's batch-launch and command orchestration features, we can achieve the highest level of automation in running containers. In this mode, we leverage command orchestration to combine all the desired commands into a single automated flow and batch-launch to bulk-launch the entire flow on multiple user-selected sessions (or all sessions in a project). To achieve this, simply curate the desired orchestration as described in Section 2.3 and bulk-launch it as per the instructions in Section 2.2.
-### 3. Retrieving results from XNAT
 
 
 
