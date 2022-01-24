@@ -1,6 +1,5 @@
 # Running on XNAT (preferred)
 ### 1. Installation and Requirements
-!!!!!!!!! XNAT version
 #### 1.1. XNAT setup
 Please follow these steps to set up XNAT, import data, and enable container service:
 1. [Set up XNAT](https://wiki.xnat.org/documentation/getting-started-with-xnat/xnat-installation-guide)
