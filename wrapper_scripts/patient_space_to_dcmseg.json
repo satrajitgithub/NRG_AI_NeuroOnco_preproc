@@ -1,0 +1,136 @@
+{
+    "BodyPartExamined": "Brain",
+    "ContentLabel": "SEGMENTATION",
+    "SeriesNumber": "300",
+    "ContentDescription": "Image Segmentation",
+    "SeriesDescription": "Predicted segmentation (DICOM-SEG)",
+    "InstanceNumber": "1",
+    "ClinicalTrialSeriesID": "NAN",
+    "segmentAttributes":
+    [
+        [
+            {
+                "AnatomicRegionSequence":
+                {
+                    "CodeMeaning": "Brain",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "T-A0100"
+                },
+                "SegmentDescription": "Healthy",
+                "labelID": 1,
+                "recommendedDisplayRGBValue":
+                [
+                    238,
+                    144,
+                    144
+                ],
+                "SegmentedPropertyTypeCodeSequence":
+                {
+                    "CodeMeaning": "Necrosis",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "M-54000"
+                },
+                "SegmentAlgorithmName": "CIL_segmenter",
+                "SegmentAlgorithmType": "AUTOMATIC",
+                "SegmentedPropertyCategoryCodeSequence":
+                {
+                    "CodeMeaning": "Morphologically Altered Structure",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "M-01000"
+                }
+            },
+            {
+                "AnatomicRegionSequence":
+                {
+                    "CodeMeaning": "Brain",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "T-A0100"
+                },
+                "SegmentDescription": "Tumor Core",
+                "labelID": 1,
+                "recommendedDisplayRGBValue":
+                [
+                    238,
+                    144,
+                    144
+                ],
+                "SegmentedPropertyTypeCodeSequence":
+                {
+                    "CodeMeaning": "Necrosis",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "M-54000"
+                },
+                "SegmentAlgorithmName": "CIL_segmenter",
+                "SegmentAlgorithmType": "AUTOMATIC",
+                "SegmentedPropertyCategoryCodeSequence":
+                {
+                    "CodeMeaning": "Morphologically Altered Structure",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "M-01000"
+                }
+            },
+            {
+                "AnatomicRegionSequence":
+                {
+                    "CodeMeaning": "Brain",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "T-A0100"
+                },
+                "SegmentDescription": "Peritumoral Edema",
+                "labelID": 2,
+                "recommendedDisplayRGBValue":
+                [
+                    144,
+                    238,
+                    144
+                ],
+                "SegmentedPropertyTypeCodeSequence":
+                {
+                    "CodeMeaning": "Edema",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "M-36300"
+                },
+                "SegmentAlgorithmName": "CIL_segmenter",
+                "SegmentAlgorithmType": "AUTOMATIC",
+                "SegmentedPropertyCategoryCodeSequence":
+                {
+                    "CodeMeaning": "Morphologically Altered Structure",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "M-01000"
+                }
+            },
+            {
+                "AnatomicRegionSequence":
+                {
+                    "CodeMeaning": "Brain",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "T-A0100"
+                },
+                "SegmentDescription": "Enhancing Tumor",
+                "labelID": 4,
+                "recommendedDisplayRGBValue":
+                [
+                    144,
+                    144,
+                    238
+                ],
+                "SegmentedPropertyTypeCodeSequence":
+                {
+                    "CodeMeaning": "Enhancing Lesion",
+                    "CodingSchemeDesignator": "NCIt",
+                    "CodeValue": "C113842"
+                },
+                "SegmentAlgorithmName": "CIL_segmenter",
+                "SegmentAlgorithmType": "AUTOMATIC",
+                "SegmentedPropertyCategoryCodeSequence":
+                {
+                    "CodeMeaning": "Morphologically Altered Structure",
+                    "CodingSchemeDesignator": "SRT",
+                    "CodeValue": "M-01000"
+                }
+            }
+        ]
+    ],
+    "ContentCreatorName": "CIL",
+    "ClinicalTrialTimePointID": "1"
+}
