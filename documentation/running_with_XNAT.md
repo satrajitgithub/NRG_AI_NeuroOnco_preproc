@@ -1,4 +1,18 @@
 # Running on XNAT
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Running on XNAT](#running-on-xnat)
+		- [1. Installation and Requirements](#1-installation-and-requirements)
+			- [1.1. XNAT setup](#11-xnat-setup)
+			- [Latest versions tested:](#latest-versions-tested)
+			- [1.2. Pulling and enabling containers](#12-pulling-and-enabling-containers)
+		- [2. Running containers](#2-running-containers)
+			- [2.1. Manually run multiple containers on single session](#21-manually-run-multiple-containers-on-single-session)
+			- [2.2. Manually run single container on multiple sessions](#22-manually-run-single-container-on-multiple-sessions)
+			- [2.3. Automatically run multiple containers on single session](#23-automatically-run-multiple-containers-on-single-session)
+			- [2.4. Automatically run multiple containers on multiple sessions](#24-automatically-run-multiple-containers-on-multiple-sessions)
+
+<!-- /TOC -->
 ### 1. Installation and Requirements
 #### 1.1. XNAT setup
 Please follow these steps to set up XNAT, import data, and enable container service:
@@ -17,7 +31,7 @@ As of Jan 2022, this software has been tested on:
 Once container service is set up, [pull the following docker images](https://wiki.xnat.org/container-service/pulling-a-container-image-126156950.html) to XNAT:
 * `satrajit2012/nrg_ai_neuroonco_preproc:v0`
 * `satrajit2012/nrg_ai_neuroonco_segment:v0`
- 
+
 In order to launch containers, the corresponding container commands need to be first enabled at the site level (by a site admin) and then at the project-level (this can be done by a project owner). For details on how to enable commands, please check out the following links:
 1. [Enabling commands at site-level](https://wiki.xnat.org/container-service/enabling-commands-and-setting-site-wide-defaults-126156956.html)
 2. [Enabling commands at project-level](https://wiki.xnat.org/container-service/enable-a-command-in-your-project-122978909.html)
@@ -52,6 +66,3 @@ Note: When orchestration is enabled, the first command in the orchestrator will 
 
 #### 2.4. Automatically run multiple containers on multiple sessions
 Finally, by combining XNAT's batch-launch and command orchestration features, we can achieve the highest level of automation in running containers. In this mode, we leverage command orchestration to combine all the desired commands into a single automated flow and batch-launch to bulk-launch the entire flow on multiple user-selected sessions (or all sessions in a project). To achieve this, simply curate the desired orchestration as described in Section 2.3 and bulk-launch it as per the instructions in Section 2.2.
-
-
-
