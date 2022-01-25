@@ -2,18 +2,17 @@
 The entire workflow consists of 7 steps:
 <!-- TOC -->
 
-- [Step-by-step walkthrough of workflow](#step-by-step-walkthrough-of-workflow)
-  - [1. Scan-type classifier](#1-scan-type-classifier)
-    - [Rule-based selection](#rule-based-selection)
-  - [2. Image registration](#2-image-registration)
-  - [3. Skull stripping and N4 bias correction](#3-skull-stripping-and-n4-bias-correction)
-  - [4. Segmentation and extraction of radiomic features](#4-segmentation-and-extraction-of-radiomic-features)
-    - [Our segmentation workflow is robust to missing MR sequences](#our-segmentation-workflow-is-robust-to-missing-mr-sequences)
-    - [Extraction of radiomic features](#extraction-of-radiomic-features)
-  - [5. Converting segmentation from atlas-space &#8594; patient-space](#5-converting-segmentation-from-atlas-space-8594-patient-space)
-  - [5. Converting segmentation from atlas-space &#8594; patient-space](#5-converting-segmentation-from-atlas-space-8594-patient-space-1)
-  - [6. Converting patient-space segmentation from nifti &#8594; dicom-seg format](#6-converting-patient-space-segmentation-from-nifti-8594-dicom-seg-format)
-  - [7. Uploading dicom-seg segmentation as ROI-assessor](#7-uploading-dicom-seg-segmentation-as-roi-assessor)
+- [1. Scan-type classifier](#1-scan-type-classifier)
+  - [Rule-based selection](#rule-based-selection)
+- [2. Image registration](#2-image-registration)
+- [3. Skull stripping and N4 bias correction](#3-skull-stripping-and-n4-bias-correction)
+- [4. Segmentation and extraction of radiomic features](#4-segmentation-and-extraction-of-radiomic-features)
+  - [Our segmentation workflow is robust to missing MR sequences](#our-segmentation-workflow-is-robust-to-missing-mr-sequences)
+  - [Extraction of radiomic features](#extraction-of-radiomic-features)
+- [5. Converting segmentation from atlas-space &#8594; patient-space](#5-converting-segmentation-from-atlas-space-8594-patient-space)
+- [6. Converting patient-space segmentation from nifti &#8594; dicom-seg format](#6-converting-patient-space-segmentation-from-nifti-8594-dicom-seg-format)
+- [7. Uploading dicom-seg segmentation as ROI-assessor](#7-uploading-dicom-seg-segmentation-as-roi-assessor)
+- [8. Optional step: manual refinement of tumor segmentation mask](#8-optional-step-manual-refinement-of-tumor-segmentation-mask)
 
 <!-- /TOC -->
 
@@ -23,6 +22,7 @@ This step consists of a two-stage classifier:
 2. a Convolutional Neural Network (CNN) based classifier based on dicom image (`Classifier2`) [cite]
 
 In the first stage, `Classifier1` takes as input the dicom series description (dicom tag) and number of frames (dicom tag) and classifies scans into two classes - anatomical or OT (other). In the second stage `Classifier2` takes only the anatomical scans and performs a more granular classification into - pre-contrast T1-weighted, post-contrast T1-weighted, T2-weighted, and T2-weighted Fluid Attenuation Inversion Recovery sequences.
+![](figures/step1.png)
 
 ### Rule-based selection
 If a session contains only one of each T1w, T1c, T2 and Flair sequences, then these 4 scans are automatically selected for the downstream processing. However, to address situations when there are multiple scans of one of more of these sequences, a rule-based selection heuristic is implemented in the code which automatically selects the required sequences.
@@ -33,6 +33,7 @@ If a session contains only one of each T1w, T1c, T2 and Flair sequences, then th
 In this step, for every session, the sequences selected from [scan-type classification](#rule-based-selection) are first rigidly co-registered to the T1w scan (or T1c scan in absence of T1w) followed by a rigid registration to a common anatomical atlas [cite] - SRI24. For this step we have used the FMRIB's Linear Image Registration Tool (FLIRT) [tool].
 ## 3. Skull stripping and N4 bias correction
 In this step, we take as input the registered sequences from [registration](#2-image-registration) and perform N4 bias field correction followed by extraction of brain mask. For this step, we have used the Robust Brain Extraction (ROBEX) [cite] tool.
+![](figures/step2+3.png)
 ## 4. Segmentation and extraction of radiomic features
 In this stage, we use a CNN based model [cite] for segmentation of gliomas. If all 4 MR sequences (T1w, T1c, T2, Flair) are available, then the model produces a 3-class segmentation of gliomas comprising the non-enhancing/necrotic core, enhancing tumor and edema. We have pre-trained our model on 1251 glioma cases available from the BraTS 2021 [cite] challenge.
 ### Our segmentation workflow is robust to missing MR sequences
@@ -46,6 +47,7 @@ Conventional CNNs are limited by their input requirements - for example, in the 
 | T1c/T2/Flair not available, only T1 available    | no segmentation                            |
 
 *whole tumor = non-enhancing/necrotic, enhancing, and edema merged into a single binary mask
+![](figures/step4.png)
 ### Extraction of radiomic features
 We use Pyradiomics [cite+link] to calculate radiomic features. All features included in pyradiomics suite are calculated including:
 1. First Order Statistics
