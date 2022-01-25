@@ -21,7 +21,7 @@ This step consists of a two-stage classifier:
 1. a Natural Language Processing (NLP) based classifier based on dicom-metadata (`Classifier1`) [cite]
 2. a Convolutional Neural Network (CNN) based classifier based on dicom image (`Classifier2`) [cite]
 
-In the first stage, `Classifier1` takes as input the dicom series description (dicom tag) and number of frames (dicom tag) and classifies scans into two classes - anatomical or OT (other). In the second stage `Classifier2` takes only the anatomical scans and performs a more granular classification into - pre-contrast T1-weighted, post-contrast T1-weighted, T2-weighted, and T2-weighted Fluid Attenuation Inversion Recovery sequences.
+In the first stage, `Classifier1` takes as input the dicom series description (dicom tag) and number of frames (dicom tag) and classifies scans into two classes - segmentable or non-segmentable. In the second stage `Classifier2` takes only the segmentable scans and performs a more granular classification into - pre-contrast T1-weighted, post-contrast T1-weighted, T2-weighted, and T2-weighted Fluid Attenuation Inversion Recovery sequences.
 ![](figures/step1.png)
 
 ### Rule-based selection
@@ -64,4 +64,5 @@ Once the segmentation mask is created, we register the mask back to patient-spac
 We take the nifti tumor mask (patient-space) created in the previous step and convert the nifti mask to dicom-seg format. For this, we have used the `itkimage2segimage` command from the dcmqi [cite+link] tool.
 ## 7. Uploading dicom-seg segmentation as ROI-assessor
 Note that, this final step is only applicable for XNAT. In this step, we take the tumor segmentation mask (patient-space and in dicom-seg format) and upload it as XNAT's "ROI Collection" datatype. This enables the user to visualize the segmentation on the XNAT OHIF viewer. OHIF (Open Health Imaging Foundation) [cite+link] is a Javascript-based image viewer integrated into XNAT which provides a powerful set of image annotation tools to XNAT users, including the ability to manually refine the annotations, perform measurements, and save those contours and segmentations as "ROI Collection" objects back into XNAT. For more details on using the XNAT OHIF viewer, please refer to the following link: [Using the XNAT OHIF Viewer](https://wiki.xnat.org/documentation/xnat-ohif-viewer/using-the-xnat-ohif-viewer-122978515.html).
+![](figures/step7.png)
 ## 8. Optional step: manual refinement of tumor segmentation mask
