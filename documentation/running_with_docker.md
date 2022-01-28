@@ -1,7 +1,7 @@
 # Running using docker
 ### 1. Installation and Requirements
 #### 1.1. Required software
-This requires an installation of docker. Instructions can be found at https://docs.docker.com/get-docker/ 
+This requires an installation of docker. Instructions can be found at https://docs.docker.com/get-docker/
 Test installation by running this:
 ```
 docker
@@ -11,10 +11,9 @@ As of Jan 2022, this software has been tested on CentOS 7.9.2009 using Docker ve
 
 #### 1.2. Pulling docker containers
 The two required containers can be pulled using:
-```
-docker pull satrajit2012/scanclsfrmeta:v3
-docker pull satrajit2012/segmenter:v3
-```
+* `satrajit2012/nrg_ai_neuroonco_preproc:v0`
+* `satrajit2012/nrg_ai_neuroonco_segment:v0`
+
 #### 1.3. Creating input folder structure
 The containers operate on a session-level. Arrange folder structure as follows:
 ```
@@ -38,8 +37,7 @@ sample_subject/
 
 ```
 #### 1.4. Removing space from folder names
-To prevent the code from breaking on linux systems, it is preferred to remove all spaces from file and foldernames.
-For that, run the following script to replace all spaces with underscore :
+To prevent the code from breaking on linux systems, it is preferred that you remove all spaces from file and foldernames. For that, run the following script to replace all spaces with underscore :
 ```
 for f in *\ *; do mv "$f" "${f// /_}"; done
 ```
@@ -62,60 +60,41 @@ subject1/
     ...
 ```
 #### 1.5. Setting input and output paths
-Set the rootpath to the session as the `input_path`:
+Set the rootpath to the session (not the subject) as the `input_path`:
 ```
-input_path=/data/xnat/foo/subject1/session1
+input_path=/absolute/path/to/subject1/session1
 ```
 Set and create the directories that you want to store your outputs in:
 ```
-output_path=/data/xnat/foo/resources
-mkdir -p $output_path/{SCANTYPES,REGISTERED,SKULL_STRIPPED,SEGMENTATION,SEGMENTATION_DCMSEG}
+output_path=/absolute/path/to/output
+mkdir -p $output_path/{1-scan_type_classifier,2-registration,3-skullstripped,4-segmentation,5-segmentation_patient_space,6-patient_space_to_dicom_seg}
 ```
 Now we are ready to run the dockers.
 ### 2. Running the containers
-We have x commands that we need to execute **sequentially** on the session.
+We have 6 commands that we need to execute **sequentially** on the session.
 #### 2.1. Scan-type classifier
 In this step we take as input the raw dicom files from the session and classify them.
 ```
-docker run --rm \
--v $input_path:/home/scans/SCANS/ \
--v $output_path/SCANTYPES:/home/output \
-scanclsfrmeta:v3 /bin/bash -c 'cd /NRG_AI_Neuroonco_preproc/; ./run_local.sh'
+docker run --rm -v $input_path:/input -v $output_path:/output_root -v $output_path/1-scan_type_classifier:/output satrajit2012/nrg_ai_neuroonco_preproc:v0 scan_type_classifier --docker
 ```
 #### 2.2. Registration
 ```
-docker run 
--v $output_path/SCANTYPES:/home/input \
--v $output_path/REGISTERED:/home/output \
-scanclsfrmeta:v3 /bin/bash -c '/NRG_AI_Neuroonco_preproc/flirt_wrapper/register_to_SRI24_local.sh -r'
+docker run --rm -v $output_path/1-scan_type_classifier:/input -v $output_path:/output_root -v $output_path/2-registration:/output satrajit2012/nrg_ai_neuroonco_preproc:v0 registration --docker
 ```
 #### 2.3. Skull-stripping
 ```
-docker run 
--v $output_path/REGISTERED/:/home/input/ \
--v $output_path/SKULL_STRIPPED:/home/output \
-scanclsfrmeta:v3 /bin/bash -c '/NRG_AI_Neuroonco_preproc/robex_wrapper/script_robex_local.sh'
+docker run --rm -v $output_path/2-registration:/input -v $output_path:/output_root -v $output_path/3-skullstripped:/output satrajit2012/nrg_ai_neuroonco_preproc:v0 skullstrip --docker
 ```
 #### 2.4. Segmentation
 ```
-docker run 
--v $output_path/SKULL_STRIPPED/:/workspace/data \
--v $output_path/SEGMENTATION:/output \
-segmenter:v3 /bin/bash -c '/run_local.sh session1'
+docker run --rm -v $output_path/3-skullstripped:/input -v $output_path:/output_root -v $output_path/4-segmentation:/output satrajit2012/nrg_ai_neuroonco_segment:v0 segmentation --docker [--evaluate] [--radiomics]
 ```
 #### 2.5. Segmentation to patient space
 ```
-docker run --rm \
--v $output_path/SCANTYPES/:/scantypes \
--v $output_path/REGISTERED/:/registered \
--v $output_path/SEGMENTATION/:/segmentation \
-scanclsfrmeta:v3 /bin/bash -c '/NRG_AI_Neuroonco_preproc/flirt_wrapper/prediction2patientspace_local.sh'
+docker run --rm -v $output_path/1-scan_type_classifier:/input_scantype -v $output_path/2-registration:/input_registration -v $output_path/4-segmentation:/input_segmentation -v $output_path:/output_root -v $output_path/5-segmentation_patient_space:/output satrajit2012/nrg_ai_neuroonco_preproc:v0 prediction_to_patient_space --docker
 ```
 #### 2.6. Patient space to dicom-seg
 ```
-docker run --rm \
--v $output_path/SEGMENTATION_DCMSEG/:/resource_structscan \
--v $output_path/SEGMENTATION/:/resource_segmentation \
--v $output_path/SEGMENTATION_DCMSEG/:/output \
-scanclsfrmeta:v3 /bin/bash -c '/NRG_AI_Neuroonco_preproc/dcmqi_wrapper/run_dcmqi_local.sh'
+docker run --rm -v $input_path:/input_session -v $output_path/1-scan_type_classifier:/input_scantype -v $output_path/2-registration:/input_registration -v $output_path/5-segmentation_patient_space:/input_segmentation_patient -v $output_path:/output_root -v $output_path/6-patient_space_to_dicom_seg:/output satrajit2012/nrg_ai_neuroonco_preproc:v0 patient_space_to_dcmseg --docker
 ```
+Note that, the step [7. Uploading dicom-seg segmentation as ROI-assessor](workflow_step_by_step.md/#7-uploading-dicom-seg-segmentation-as-roi-assessor) is only for XNAT and not performed for general docker usage.
