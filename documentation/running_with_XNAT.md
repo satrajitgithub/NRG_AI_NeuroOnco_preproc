@@ -15,12 +15,12 @@ Please follow these steps to set up XNAT, import data, and enable container serv
 2. [Create a project](https://wiki.xnat.org/documentation/how-to-use-xnat/creating-and-managing-projects)
 3. [Import data](https://wiki.xnat.org/documentation/how-to-use-xnat/image-session-upload-methods-in-xnat)
 4. [Container service administration](https://wiki.xnat.org/container-service/container-service-administration-122978855.html)
-#### Latest versions tested:  
+##### Latest versions tested:  
 As of Jan 2022, this software has been tested on:
-* XNAT version 1.8.2.2, build: 4
-* Container Service Plugin 3.1.0
-* Batch Launch Plugin 0.5.0
-* XNAT OHIF Plugin 3.1.0
+* XNAT version 1.8.2.2, build: 4 [[installation guide](https://wiki.xnat.org/documentation/getting-started-with-xnat/xnat-installation-guide)]
+* Container Service Plugin 3.1.0 [[link](https://bitbucket.org/xnatdev/container-service/downloads/container-service-3.1.0-fat.jar)]
+* Batch Launch Plugin 0.5.0 [[link](https://bitbucket.org/xnatx/xnatx-batch-launch-plugin/downloads/batch-launch-plugin-0.5.0.jar)]
+* XNAT OHIF Plugin 3.2.0-SNAPSHOT [[link](https://bitbucket.org/icrimaginginformatics/ohif-viewer-xnat-plugin/downloads/ohif-viewer-3.1.0-XNAT-1.8.0.jar)]
 
 #### 1.2. Pulling and enabling containers
 Once container service is set up, [pull the following docker images](https://wiki.xnat.org/container-service/pulling-a-container-image-126156950.html) to XNAT:
