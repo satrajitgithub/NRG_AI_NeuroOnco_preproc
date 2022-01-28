@@ -167,6 +167,12 @@ if __name__ == '__main__':
 
     print("Reference_scan:", ref_series_number)
 
+    # ~~~~~~~~~~~~~~~~~~~ Determine reference scan for dicom-seg from the final 4 scans - preference in order: T1c - Flair - T2 - T1 ~~~~~~~
+    # convert to categorical series for custom sorting
+    # https://stackoverflow.com/questions/13838405/custom-sorting-in-pandas-dataframe/27009771
+    df_final['prediction'] = pd.Categorical(df_final['prediction'], ["T1c", "Flair", "T2", "T1"])
+    ref_series_number_dcmseg = df_final.sort_values('prediction').iloc[0].series_number
+    print("ref_series_number_dcmseg:", ref_series_number_dcmseg)
 
     # ~~~~~~~~~~~~~~~~~~~ Add provenance to df_meta and save as final result  ~~~~~~~
     df_meta = pd.read_csv(out_file_meta)
@@ -207,5 +213,12 @@ if __name__ == '__main__':
             bash_op = '\n'.join([f"targ_scan_name={out_file}"]+['']) # joins each command with a newline
             print(f"bash_op for reference_scan.txt:\n{bash_op}")
             file1 = open(os.path.join(root_out_folder, 'reference_scan.txt'),"w")
+            file1.writelines(bash_op)
+            file1.close()
+
+        if series_id == str(ref_series_number_dcmseg):
+            bash_op = '\n'.join([f"targ_scan_name={out_file}"]+['']) # joins each command with a newline
+            print(f"bash_op for reference_scan_dcmseg.txt:\n{bash_op}")
+            file1 = open(os.path.join(root_out_folder, 'reference_scan_dcmseg.txt'),"w")
             file1.writelines(bash_op)
             file1.close()

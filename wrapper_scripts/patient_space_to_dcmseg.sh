@@ -18,7 +18,7 @@ SEGMENTATION=/input_segmentation_patient
 
 STRUCT_SCAN=/output/structural_scan
 
-source $ANAT_PATIENT_SPACE/reference_scan.txt
+source $ANAT_PATIENT_SPACE/reference_scan_dcmseg.txt
 echo "Target scan ="$targ_scan_name
 A="$(echo $targ_scan_name | cut -d'_' -f1)"
 dcm_seriesnumber=${A#"series"}
