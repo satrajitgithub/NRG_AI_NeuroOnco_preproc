@@ -1,4 +1,21 @@
 # Running using docker
+<!-- TOC -->
+- [1. Installation and Requirements](#1-installation-and-requirements)
+  - [1.1. Required software](#11-required-software)
+    - [Latest versions tested](#latest-versions-tested)
+  - [1.2. Pulling docker containers](#12-pulling-docker-containers)
+  - [1.3. Creating input folder structure](#13-creating-input-folder-structure)
+  - [1.4. Removing space from folder names](#14-removing-space-from-folder-names)
+  - [1.5. Setting input and output paths](#15-setting-input-and-output-paths)
+- [2. Running the containers](#2-running-the-containers)
+  - [2.1. Scan-type classifier](#21-scan-type-classifier)
+  - [2.2. Registration](#22-registration)
+  - [2.3. Skull-stripping](#23-skull-stripping)
+  - [2.4. Segmentation](#24-segmentation)
+  - [2.5. Segmentation to patient space](#25-segmentation-to-patient-space)
+  - [2.6. Patient space to dicom-seg](#26-patient-space-to-dicom-seg)
+
+<!-- /TOC -->
 ### 1. Installation and Requirements
 #### 1.1. Required software
 This requires an installation of docker. Instructions can be found at https://docs.docker.com/get-docker/
@@ -6,7 +23,7 @@ Test installation by running this:
 ```
 docker
 ```
-#### Latest versions tested:  
+##### Latest versions tested  
 As of Jan 2022, this software has been tested on CentOS 7.9.2009 using Docker version 20.10.7, build f0df350.
 
 #### 1.2. Pulling docker containers
