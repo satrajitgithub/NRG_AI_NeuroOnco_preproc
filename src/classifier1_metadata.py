@@ -292,8 +292,18 @@ if __name__ == '__main__':
             frames = len(dicom_files)
             print("Now reading:", os.path.join(root, dicom_files[0]))
             dcm_file = pydicom.read_file(os.path.join(root, dicom_files[0]))
-            orientation = orientation_names[get_image_orientation(dcm_file)]
-            series_description = dcm_file.SeriesDescription
+
+            # check for DICOM Tag (0008,103E) Series description - if it does not have, then skip
+            # some scans on XNAT (eg: 1-SR1) do not have series desc
+            # enclose within try/except in case the tag is absent
+            try:
+                series_description = dcm_file.SeriesDescription
+            except:
+                # skip scan
+                print(f"Skipped series - no series descriptions")
+                continue
+
+            orientation = orientation_names[get_image_orientation(dcm_file)]             
 
             if localmode:
                 # Option1: extract series number from scan - this might lead to duplicate series numbers in cases where multiple scans have same series number (eg: TCGA-06-0158)
@@ -349,7 +359,15 @@ if __name__ == '__main__':
     df.loc[(df['series_description'].str.contains('TRA_T', na=False, case=False)) & (df['prediction'] == 'OT'), 'prediction'] = 'anatomical'
 
     # if series description contains following but scan has *NOT* been classified OT by classifier1, then override that with 'OT' so that it is *NOT* fed to classifier2
-    df.loc[(df['series_description'].str.contains('task|lang|word', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('task|lang|word|navigation', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('design|somersault|exorcist|bolus', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('carotid|aahscout|PLANE_LOC', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('unknown|ROIs_of|localizer|document', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('DTI|DYNAMIC|DIFFUSION|diff', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('PERFUSION|dwi|adc|swi', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('TRACEW|posdisp|cow|orbits', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('cbf|cbv|mag|pha', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('fmri|subtract|collection|motor', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
     df.loc[(df['series_description'].str.contains('medic|dixon|trufi|msma|tip|stir', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
 
     # if n_frames < *empirically determined number* but scan has *NOT* been classified OT by classifier1, then override that with 'OT' so that it is *NOT* fed to classifier2

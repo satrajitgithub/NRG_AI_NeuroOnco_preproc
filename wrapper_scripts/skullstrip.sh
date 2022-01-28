@@ -42,5 +42,7 @@ fi
 echo -e "Session Done!"		
 
 python -u $SCRIPT_ROOT/utils/QC_visual.py $SKULL_STRIPPED/
+
+# explicitly setting permissions to handle XNAT's "failed (upload)" error
 cd $SKULL_STRIPPED/
 chmod -R 755 .

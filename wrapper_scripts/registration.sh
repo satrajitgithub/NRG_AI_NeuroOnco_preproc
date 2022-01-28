@@ -102,3 +102,6 @@ fi
 
 echo "It took" $SECONDS "seconds"
 
+# explicitly setting permissions to handle XNAT's "failed (upload)" error
+cd /output/
+chmod -R 755 .

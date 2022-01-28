@@ -3,6 +3,7 @@
 source $SCRIPT_ROOT/utils/bash_utils.sh
 banner "Starting Registration"
 
+echo "Checking for segmentationready flag..."
 if [[ $1 == *xnat* ]];then 
   project=$2
   subject=$3
@@ -12,6 +13,8 @@ if [[ $1 == *xnat* ]];then
 else
   segmentationready=$(get_custom_flag)
 fi
+
+echo "segmentationready="$segmentationready
 
 if [[ $segmentationready != *"true"* ]];then 
   echo "Sorry! This session is NOT segmentationready"

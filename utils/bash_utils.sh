@@ -35,7 +35,7 @@ set_custom_flag_xnat() {
 
 get_custom_flag_xnat () {
   # parse segmentationready flag with python
-  echo python -u $SCRIPT_ROOT/utils/parse_XNAT_custom_flag.py $2 $3 $4 $1
+  # echo python -u $SCRIPT_ROOT/utils/parse_XNAT_custom_flag.py $2 $3 $4 $1
   python -u $SCRIPT_ROOT/utils/parse_XNAT_custom_flag.py $2 $3 $4 $1
 
   if [ $? -eq 0 ]; then
