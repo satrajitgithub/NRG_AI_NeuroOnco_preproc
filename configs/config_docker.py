@@ -5,7 +5,7 @@ import pprint
 
 config = defaultdict(lambda: None)
 config['labels'] = {}
-config['labels']['scan_labels'] = ['T1', 'T1c', 'T2', 'PD', 'Flair', 'DWI_DWI', 'DERIVED', 'PWI_DSC', 'UNKNOWN']
+config['labels']['scan_labels'] = ['T1', 'T1c', 'T2', 'OT', 'Flair', 'OT', 'OT', 'OT', 'OT']
 config['labels']['orientation_labels'] = ['3D', 'Ax', 'Cor', 'Sag', 'Obl', '4D', 'UNKNOWN']
 
 config['trained_models'] = {}
