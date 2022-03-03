@@ -359,16 +359,17 @@ if __name__ == '__main__':
     df.loc[(df['series_description'].str.contains('TRA_T', na=False, case=False)) & (df['prediction'] == 'OT'), 'prediction'] = 'anatomical'
 
     # if series description contains following but scan has *NOT* been classified OT by classifier1, then override that with 'OT' so that it is *NOT* fed to classifier2
-    df.loc[(df['series_description'].str.contains('task|lang|word|navigation', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('task|lang|word|navigation|rest', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
     df.loc[(df['series_description'].str.contains('design|somersault|exorcist|bolus', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('carotid|aahscout|PLANE_LOC', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('unknown|ROIs_of|localizer|document', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('DTI|DYNAMIC|DIFFUSION|diff', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('PERFUSION|dwi|adc|swi', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('TRACEW|posdisp|cow|orbits', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('carotid|aahscout|plane_loc', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('unknown|rois_of|localizer|document', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('dti|dynamic|diffusion|diff', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('perfusion|dwi|adc|swi', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('tracew|posdisp|cow|orbits', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
     df.loc[(df['series_description'].str.contains('cbf|cbv|mag|pha', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
     df.loc[(df['series_description'].str.contains('fmri|subtract|collection|motor', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
     df.loc[(df['series_description'].str.contains('medic|dixon|trufi|msma|tip|stir', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('3D Object Data', na=False, case=False)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
 
     # if n_frames < *empirically determined number* but scan has *NOT* been classified OT by classifier1, then override that with 'OT' so that it is *NOT* fed to classifier2
     # This is done because otherwise the scans with low frames get propagated and ultimately gets messed up in coregistration stage
