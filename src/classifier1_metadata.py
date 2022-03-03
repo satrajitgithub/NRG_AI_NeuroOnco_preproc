@@ -262,7 +262,21 @@ class HOF_Classifier:
         self.vectorizer,self.classifier=pickle.load(open(file,'rb'))
 
 
+def get_dcm_acq_params(dcm_file):
+    dicom_tag_query_dict = {"Age": "[0x10,0x1010]", 
+                            "Sex": "[0x10,0x40]", 
+                            "Manufacturer": "[0x08,0x70]", 
+                            "Model Name": "[0x08,0x1090]", 
+                            "Slice thickness": "[0x18,0x50]", 
+                            "Field strength": "[0x18,0x87]", 
+                            "Axial resolution": "[0x28,0x30]", 
+                            "TR": "[0x18,0x80]", 
+                            "TE": "[0x18,0x81]", 
+                            "Flip angle": "[0x18,0x1314]"}
 
+    dicom_tag_values_dict = {i:dcm_file[eval(j)].value if eval(j) in dcm_file else "NA" for i,j in dicom_tag_query_dict.items()}
+    
+    return dicom_tag_values_dict
 
 if __name__ == '__main__':
     start_time = time.time()
@@ -281,6 +295,7 @@ if __name__ == '__main__':
     print(f"dicom folder = {DICOM_FOLDER}")
 
     scans_list_of_dicts = []
+    scan_acq_params_dict_of_dicts = {}
     scans_skipped = []
 
     for root, dirs, files in os.walk(DICOM_FOLDER, topdown=False):
@@ -315,6 +330,10 @@ if __name__ == '__main__':
                 series_number = os.path.basename(os.path.dirname(root))
 
             scan_dict = {'series_number': str(series_number), 'frames': str(frames), 'series_description': series_description, 'orientation': orientation}
+            
+            # Save the acq parameters for all the scans
+            scan_acq_params_dict = get_dcm_acq_params(dcm_file)
+            scan_acq_params_dict_of_dicts[str(series_number)] = scan_acq_params_dict
 
             # check for DICOM Tag (0008,0008) Image Type - if its not ORIGINAL/PRIMARY, then skip
             # enclose within try/except in case the tag is absent
@@ -339,6 +358,11 @@ if __name__ == '__main__':
 
             scans_list_of_dicts.append(scan_dict)
 
+    # save the acq param dict
+    df_acq = pd.DataFrame.from_dict(scan_acq_params_dict_of_dicts).T
+    df_acq = df_acq.reindex(index=natsorted(df_acq.index))
+    print(f"\nAcq params: \n {df_acq}") 
+    df_acq.to_csv(config['testing']['root_dcm_acq'])
            
     print("There are {} scans to be classified".format(len(scans_list_of_dicts)))
     # pprint.pprint(scans_list_of_dicts)
@@ -359,17 +383,17 @@ if __name__ == '__main__':
     df.loc[(df['series_description'].str.contains('TRA_T', na=False, case=False)) & (df['prediction'] == 'OT'), 'prediction'] = 'anatomical'
 
     # if series description contains following but scan has *NOT* been classified OT by classifier1, then override that with 'OT' so that it is *NOT* fed to classifier2
-    df.loc[(df['series_description'].str.contains('task|lang|word|navigation|rest', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('design|somersault|exorcist|bolus', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('carotid|aahscout|plane_loc', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('unknown|rois_of|localizer|document', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('dti|dynamic|diffusion|diff', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('perfusion|dwi|adc|swi', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('tracew|posdisp|cow|orbits', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('cbf|cbv|mag|pha', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('fmri|subtract|collection|motor', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('medic|dixon|trufi|msma|tip|stir', na=False, case=False, regex=True)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
-    df.loc[(df['series_description'].str.contains('3D Object Data', na=False, case=False)) & (df['prediction'] != 'OT'), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('task|lang|word|navigation|rest', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('design|somersault|exorcist|bolus', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('carotid|aahscout|plane_loc', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('unknown|rois_of|localizer|document', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('dti|dynamic|diffusion|diff', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('perfusion|dwi|adc|swi', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('tracew|posdisp|cow|orbits', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('cbf|cbv|mag|pha', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('fmri|subtract|collection|motor', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('medic|dixon|trufi|msma|tip|stir', na=False, case=False, regex=True)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
+    df.loc[(df['series_description'].str.contains('3D Object Data', na=False, case=False)) & (~df['prediction'].str.contains('OT')), 'prediction'] = 'OT'
 
     # if n_frames < *empirically determined number* but scan has *NOT* been classified OT by classifier1, then override that with 'OT' so that it is *NOT* fed to classifier2
     # This is done because otherwise the scans with low frames get propagated and ultimately gets messed up in coregistration stage

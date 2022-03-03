@@ -27,6 +27,7 @@ config['data_preparation']['image_size_z'] = 25
 
 config['testing'] = {}
 config['testing']['root_output_folder'] = os.path.join('/output', 'SCANTYPES')
+config['testing']['root_dcm_acq'] = os.path.join(config['testing']['root_output_folder'], 'acq_params.csv')
 config['testing']['root_pred_classifier1'] = os.path.join(config['testing']['root_output_folder'], 'Predictions_classifier1.csv')
 config['testing']['root_pred_classifier2'] = os.path.join(config['testing']['root_output_folder'], 'Predictions_classifier2.csv')
 config['testing']['root_pred_classifier2_per_slice'] = os.path.join(config['testing']['root_output_folder'], 'Predictions_classifier2_per_slice.csv')

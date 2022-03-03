@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ~~~~~~~~~~~~~~~~~~~~ Set paths ~~~~~~~~~~~~~~~~~~~~~~~~
-echo "Updated: 01/28/2022 - 3:20pm"
+echo "Updated: 03/03/2022"
 # export TERM=xterm
 export SCRIPT_ROOT=/NRG_AI_NeuroOnco_preproc
 export DCM2NIIX_PATH=/dcm2niix
@@ -11,13 +11,6 @@ export ROBEX_PATH=/opt/ROBEX_linux
 export DCMTK_PATH=/opt/dcmtk366/bin
 export DCMQI_PATH=/opt/dcmqi/bin
 
-
-# export SCRIPT_ROOT=/home/satrajit.chakrabarty/NRG_AI_Neuroonco_preproc
-# export SESSION_PATH=/home/satrajit.chakrabarty/NRG_AI_Neuroonco_preproc_workspace/subject1/session1
-# export OUTPUT_PATH=/home/satrajit.chakrabarty/NRG_AI_Neuroonco_preproc_workspace/resources
-# export DCM2NIIX_PATH=/export/mricron/mricron-20190902/dcm2niix
-# export FSL_PATH=/export/fsl/fsl-5.0.10/bin
-# export ATLAS_PATH=/scratch/satrajit.chakrabarty/fsl_scripts
 
 print_help() {
   echo $"Error in input!
