@@ -119,49 +119,54 @@ if __name__ == '__main__':
     df_agg.to_csv(out_file_clsfr2, index = False)
     print(f"\n\nClassification results (classifier2): \n {df_agg}") 
 
-    if not df_agg[~(df_agg['prediction'] == 'T1')].empty:
-        # ~~~~~~~~~~~~~~~~~~~~~~~~~ Aggregation from classifier1 and classifier2 and creating df_meta ~~~~~~~~~~~~~~~~~~~~~~~~~
-        df1 = pd.read_csv(out_file_clsfr1, index_col = 'series_number')
-        df2 = pd.read_csv(out_file_clsfr2, index_col = 'series_number')
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~ Aggregation from classifier1 and classifier2 and creating df_meta ~~~~~~~~~~~~~~~~~~~~~~~~~
+    df1 = pd.read_csv(out_file_clsfr1, index_col = 'series_number')
+    df2 = pd.read_csv(out_file_clsfr2, index_col = 'series_number')
 
-        df1.index = df1.index.map(str)
-        df2.index = df2.index.map(str)
+    df1.index = df1.index.map(str)
+    df2.index = df2.index.map(str)
 
-        # ~~~~~~~~~~~~~~~~ Handling scans which has double/multiple acquisitions (eg: single T2 has PD+T2)~~~~~~~~~~~~~~~~~
-        f = []
-        for sn in df2.index: 
-            if sn in df1.index:
-                df1.at[sn, 'prediction'] = df2.at[sn, 'prediction']
-            # if there are two scans per series (eg: T2 has PD+T2), then scans are named as 2_scan_1, 2_scan_2. in that case this will go into the else block
-            else:
-                f.append(sn)
+    # ~~~~~~~~~~~~~~~~ Handling scans which has double/multiple acquisitions (eg: single T2 has PD+T2)~~~~~~~~~~~~~~~~~
+    f = []
+    for sn in df2.index: 
+        if sn in df1.index:
+            df1.at[sn, 'prediction'] = df2.at[sn, 'prediction']
+        # if there are two scans per series (eg: T2 has PD+T2), then scans are named as 2_scan_1, 2_scan_2. in that case this will go into the else block
+        else:
+            f.append(sn)
 
-        for a in f:
-            a1 = a.split('_')[0]
-            d = dict(df1.loc[a1])
-            d['prediction'] = df2.loc[a]['prediction']
-            df1.loc[a] = d
-            
-        for a in list(set([i.split('_')[0] for i in f])):
-            df1.drop([a], inplace=True)
-        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # Issue: https://github.com/satrajitgithub/NRG_AI_Neuroonco_preproc/issues/20
-        # Following checks if there are still any anatomical scans in meta results which have predictions from classifier1 which might
-        # have trickled down. These are the scans for which classifier2 makes no predictions (i.e. skips them) due to some reason - most
-        # often because dcm2niix fails due to these being derived scans. If there are any such scans, we hard assign the 'OT' label to them
-        # because there should be no anatomical labels of classifier1 present in the final predictions.
-        df1.loc[df1['prediction'] == 'anatomical', 'prediction'] = 'OT'
+    for a in f:
+        a1 = a.split('_')[0]
+        d = dict(df1.loc[a1])
+        d['prediction'] = df2.loc[a]['prediction']
+        df1.loc[a] = d
+        
+    for a in list(set([i.split('_')[0] for i in f])):
+        df1.drop([a], inplace=True)
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Issue: https://github.com/satrajitgithub/NRG_AI_Neuroonco_preproc/issues/20
+    # Following checks if there are still any anatomical scans in meta results which have predictions from classifier1 which might
+    # have trickled down. These are the scans for which classifier2 makes no predictions (i.e. skips them) due to some reason - most
+    # often because dcm2niix fails due to these being derived scans. If there are any such scans, we hard assign the 'OT' label to them
+    # because there should be no anatomical labels of classifier1 present in the final predictions.
+    df1.loc[df1['prediction'] == 'anatomical', 'prediction'] = 'OT'
 
-        df1 = df1.reindex(index=natsorted(df1.index))
+    df1 = df1.reindex(index=natsorted(df1.index))
 
-        df1.to_csv(out_file_meta)
+    df1.to_csv(out_file_meta)
 
-        print(f"\n\nClassification results (meta): \n {df1}")
+    df1.reset_index(inplace = True)
+    print(f"\n\nClassification results (meta): \n {df1}")
 
-        sys.exit(0)
-
+    if not df_agg[~df_agg['prediction'].str.contains('OT')].empty:
+        if not df_agg[~(df_agg['prediction'] == 'T1')].empty:
+            sys.exit(0)
+        else:
+            print(f"Classifier2 could find only pre-contrast T1 scan from this session, which cannot be segmented")
+            convert_df_meta_to_bash_parsable_text(df1, config['testing']['root_pred_classifier_meta_txt'])
+            sys.exit(1)
     else:
-        print(f"Classifier2 could find only pre-contrast T1 scan from this session, which cannot be segmented")
-        convert_df_meta_to_bash_parsable_text(df_agg, config['testing']['root_pred_classifier_meta_txt'])
+        print(f"Classifier2 could not find any suitable scans to process from this session")
+        convert_df_meta_to_bash_parsable_text(df1, config['testing']['root_pred_classifier_meta_txt'])
         sys.exit(1)
         
