@@ -19,3 +19,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+By installing the Software, the user also agrees to the following licenses, which pertain to the code and its different constituents:
+
+FSL - https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Licence
+dcm2niix - https://github.com/rordenlab/dcm2niix/blob/master/license.txt
+dcmqi - https://github.com/QIICR/dcmqi/blob/master/LICENSE.txt
+ROBEX - https://www.nitrc.org/projects/robex
+SRI24 Atlas - https://creativecommons.org/licenses/by-sa/3.0/us/legalcode 
+dcmtk - https://github.com/DCMTK/dcmtk/blob/master/COPYRIGHT
