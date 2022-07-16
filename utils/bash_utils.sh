@@ -45,6 +45,7 @@ get_custom_flag_xnat () {
   fi
 }
 
+
 set_custom_flag() {
     echo $1'='$2 >> /output_root/custom_flag.txt
 }

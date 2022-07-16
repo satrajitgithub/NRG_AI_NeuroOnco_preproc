@@ -19,5 +19,6 @@ echo "segmentationready="$segmentationready
 if [[ $segmentationready != *"true"* ]];then 
   echo "Sorry! This session is NOT segmentationready"
 else
+  echo "This session is segmentationready - performing registration:"
   $SCRIPT_ROOT/wrapper_scripts/registration.sh "${@:1}"
 fi

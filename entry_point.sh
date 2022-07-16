@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ~~~~~~~~~~~~~~~~~~~~ Set paths ~~~~~~~~~~~~~~~~~~~~~~~~
-echo "Updated: 03/03/2022"
+echo "Updated: 07/07/2022"
 # export TERM=xterm
 export SCRIPT_ROOT=/NRG_AI_NeuroOnco_preproc
 export DCM2NIIX_PATH=/dcm2niix

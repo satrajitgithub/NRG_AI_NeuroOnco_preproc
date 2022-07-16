@@ -39,11 +39,22 @@ if [ $? -eq 0 ]; then
 fi
 
 if [[ $1 == *xnat* ]];then 
+
+  echo "Processing finished. Now uploading scantypes to XNAT:"
+  
+  echo "Getting JSESSIONID by following command:"
+  echo curl -u $XNAT_USER:$XNAT_PASS -X GET $XNAT_HOST/data/JSESSION
+  
+  jsess=$(xnat_jsess)
   project=$2
   subject=$3
   session=$4
 
-  jsess=$(xnat_jsess)
+  echo "Giving following inputs to upload_scantypes() func:"
+  echo "jsess="$jsess
+  echo "project="$project
+  echo "subject="$subject
+  echo "session="$session
   
   upload_scantypes /output/SCANTYPES/Predictions_classifier_meta.txt $jsess $project $subject $session
   set_custom_flag_xnat $segmentationready $jsess $project $subject $session
