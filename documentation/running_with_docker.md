@@ -54,9 +54,9 @@ sample_subject/
 
 ```
 #### 1.4. Removing space from folder names
-To prevent the code from breaking on linux systems, it is preferred that you remove all spaces from file and foldernames. For that, run the following script to replace all spaces with underscore :
+The code assumes that no directory or filenames will have spaces in them, so please remove all spaces from file and folder names. An example script which does this (replaces all spaces with underscore in all directory and filenames recursively):
 ```
-for f in *\ *; do mv "$f" "${f// /_}"; done
+find . -depth -name '* *' | while IFS= read -r f ; do mv -i "$f" "$(dirname "$f")/$(basename "$f"|tr ' ' _)" ; done
 ```
 For example, if you had data of a subject as follows:
 ```
