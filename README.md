@@ -15,7 +15,8 @@ The workflow can be used either on command-line using [docker](https://www.docke
 
 For a general overview of each step of the workflow, please refer to our [step-by-step walkthrough](documentation/workflow_step_by_step.md).
 
-## Tutorial
+## Demonstration
+A live XNAT demonstration of I3CR-WANO can be accessed at: https://demo.xnat.org/ by accessing the `I3CR_WANO_demo` project. The project has containers pulled and command orchestration set up. So, I3CR-WANO can be run in a single session mode, batch mode or orchestration mode (details of different modes can be found at [running with XNAT](documentation/running_with_XNAT.md#21-manually-run-multiple-containers-on-single-session)).
 
 ## Citation
 If you use I3CR-WANO in your work, please cite:
