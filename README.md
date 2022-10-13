@@ -20,10 +20,10 @@ For a general overview of each step of the workflow, please refer to our [step-b
 ## Citation
 If you use I3CR-WANO in your work, please cite:
 
-xxx
+_Satrajit Chakrabarty, Syed Amaan Abidi, Mina Mousa, Mahati Mokkarala, Isabelle Hren, Divya Yadav, Matthew Kelsey, Pamela LaMontagne, John Wood, Michael Adams, Yuzhuo Su, Sherry Thorpe, Caroline Chung, Aristeidis Sotiras, Daniel S. Marcus, **"Integrative Imaging Informatics for Cancer Research: Workflow Automation for Neuro-oncology (I3CR-WANO)."** https://arxiv.org/abs/2210.03151 (2022)._
 
 ## Contact
-As this framework is under active development, please open a Github issue or send your questions to satrajit.chakrabarty@wustl.edu if you run into any errors.
+Please open a Github issue or send your questions to satrajit.chakrabarty@wustl.edu if you run into any errors.
 
 ## Disclaimer
 **Only intended for research purposes and not for clinical use.**
