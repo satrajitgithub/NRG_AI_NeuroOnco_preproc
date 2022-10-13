@@ -2,7 +2,7 @@
 <!-- TOC -->
 - [1. Installation and Requirements](#1-installation-and-requirements)
 	- [1.1. XNAT setup](#11-xnat-setup)
-		- [Latest versions tested:](#latest-versions-tested)
+		- [Latest versions tested](#latest-versions-tested)
 	- [1.2. Pulling and enabling containers](#12-pulling-and-enabling-containers)
 - [2. Running containers](#2-running-containers)
 	- [2.1. Manually run multiple containers on single session](#21-manually-run-multiple-containers-on-single-session)
@@ -19,7 +19,7 @@ Please follow these steps to set up XNAT, import data, and enable container serv
 2. [Create a project](https://wiki.xnat.org/documentation/how-to-use-xnat/creating-and-managing-projects)
 3. [Import data](https://wiki.xnat.org/documentation/how-to-use-xnat/image-session-upload-methods-in-xnat)
 4. [Container service administration](https://wiki.xnat.org/container-service/container-service-administration-122978855.html)
-##### Latest versions tested:  
+##### Latest versions tested  
 As of October 2022, this software has been tested on:
 * XNAT version 1.8.2.2, build: 4 [[installation guide](https://wiki.xnat.org/documentation/getting-started-with-xnat/xnat-installation-guide)]
 * Container Service Plugin 3.1.0 [[link](https://bitbucket.org/xnatdev/container-service/downloads/container-service-3.1.0-fat.jar)]
