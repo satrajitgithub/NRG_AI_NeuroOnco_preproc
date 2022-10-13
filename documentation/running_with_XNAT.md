@@ -21,10 +21,10 @@ Please follow these steps to set up XNAT, import data, and enable container serv
 4. [Container service administration](https://wiki.xnat.org/container-service/container-service-administration-122978855.html)
 ##### Latest versions tested  
 As of October 2022, this software has been tested on:
-* XNAT version 1.8.2.2, build: 4 [[installation guide](https://wiki.xnat.org/documentation/getting-started-with-xnat/xnat-installation-guide)]
+* XNAT version 1.8.4.1, build: 7 [[installation guide](https://wiki.xnat.org/documentation/getting-started-with-xnat/xnat-installation-guide)]
 * Container Service Plugin 3.1.0 [[link](https://bitbucket.org/xnatdev/container-service/downloads/container-service-3.1.0-fat.jar)]
 * Batch Launch Plugin 0.5.0 [[link](https://bitbucket.org/xnatx/xnatx-batch-launch-plugin/downloads/batch-launch-plugin-0.5.0.jar)]
-* XNAT OHIF Plugin 3.2.0-SNAPSHOT [[link](https://bitbucket.org/icrimaginginformatics/ohif-viewer-xnat-plugin/downloads/ohif-viewer-3.1.0-XNAT-1.8.0.jar)]
+* XNAT OHIF Plugin 3.3.0 [[link](https://bitbucket.org/icrimaginginformatics/ohif-viewer-xnat-plugin/downloads/ohif-viewer-3.3.0.jar)]
 
 #### 1.2. Pulling and enabling containers
 Once container service is set up, [pull the following docker images](https://wiki.xnat.org/container-service/pulling-a-container-image-126156950.html) to XNAT:
@@ -57,11 +57,14 @@ In a dataset containing a large number of sessions, it is often necessary to lau
 ![](figures/batch-launch.gif)
 Once bulk processing has finished, the Processing Dashboard lists the outcome (Complete/Failed/Ready) as a sortable column which can be used to additionally inspect the results.
 [](#orchestration)
+
 #### 2.3. Automatically run multiple containers on single session (command orchestration)
 In this step, we will take advantage of XNAT's [Command Orchestration](https://wiki.xnat.org/container-service/set-up-command-orchestration-130515311.html) feature to sequentially run multiple containers on a single-click. In Command orchestration, multiple command wrappers are daisy-chained in a specific sequence by the user so that they run sequentially. For example, we can create an orchestration with `1-Scan-type Classifier`, `2-Registration`, and `3-Skullstrip` as follows:
 ![](figures/orchestration_setup.gif)<br />
 Now when we run this orchestrator on a session, it runs `1-Scan-type Classifier`, `2-Registration`, and `3-Skullstrip` sequentially without requiring the user to wait for each of them to finish and launch the next one. For more details on adding orchestrations to your project and running them, please check out [Add Command Orchestration to Your Project](https://wiki.xnat.org/container-service/add-command-orchestration-to-your-project-132415533.html). <br />
-Note: When orchestration is enabled, the first command in the orchestrator will launch the entire orchestration process. For example, in the above example, our first command is `1-Scan-type Classifier`. So note that when orchestration is enabled, launching `1-Scan-type Classifier` will launch not just this command but the entire associated orchestration. If you want to turn this off and want to run only `1-Scan-type Classifier`, you can disable orchestration on a project level by selecting Command Orchestration &#8594; "No orchestration" radio-button (as described [here](https://wiki.xnat.org/container-service/add-command-orchestration-to-your-project-132415533.html#:~:text=To%20remove%20an%20orchestration%20from%20your%20project%2C%20select%20the%20radio%20button%20next%20to%20%22No%20orchestration.%22))
+**Note**: When orchestration is enabled, the first command in the orchestrator will launch the entire orchestration process. For example, if the orchestration contains the following three commands: `1-Scan-type Classifier`, `2-Registration` and `3-Skullstrip`, then upon launching `1-Scan-type Classifier`, the entire orchestration is launched. To address this, we have included a dedicated command called `XNAT orchestrator` with the `satrajit2012/nrg_ai_neuroonco_preproc:v0` container, to be specifically used as the launching command of the orchestration. So, if you want to set up your I3CR-WANO orchestration, please use `XNAT orchestrator` as the first command instead of `1-Scan-type Classifier`.
+
+You can disable command orchestration on a project level by selecting Command Orchestration &#8594; "No orchestration" radio-button (as described [here](https://wiki.xnat.org/container-service/add-command-orchestration-to-your-project-132415533.html#:~:text=To%20remove%20an%20orchestration%20from%20your%20project%2C%20select%20the%20radio%20button%20next%20to%20%22No%20orchestration.%22)). When command orchestration is disabled, `XNAT orchestrator` will not work.
 
 #### 2.4. Automatically run multiple containers on multiple sessions (batch + orchestration)
 Finally, by combining XNAT's batch-launch and command orchestration features, we can achieve the highest level of automation in running containers. In this mode, we leverage command orchestration to combine all the desired commands into a single automated flow and batch-launch to bulk-launch the entire flow on multiple user-selected sessions (or all sessions in a project). To achieve this, simply curate the desired orchestration as described in [Section 2.3](#23-automatically-run-multiple-containers-on-single-session) and bulk-launch it as per the instructions in [Section 2.2](#22-manually-run-single-container-on-multiple-sessions).
