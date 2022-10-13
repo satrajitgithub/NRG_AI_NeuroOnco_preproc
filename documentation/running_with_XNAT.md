@@ -1,12 +1,16 @@
 # Running on XNAT
+<!-- TOC -->
 - [1. Installation and Requirements](#1-installation-and-requirements)
 	- [1.1. XNAT setup](#11-xnat-setup)
+		- [Latest versions tested:](#latest-versions-tested)
 	- [1.2. Pulling and enabling containers](#12-pulling-and-enabling-containers)
 - [2. Running containers](#2-running-containers)
 	- [2.1. Manually run multiple containers on single session](#21-manually-run-multiple-containers-on-single-session)
-	- [2.2. Manually run single container on multiple sessions (batch mode)](#22-manually-run-single-container-on-multiple-sessions)
-	- [2.3. Automatically run multiple containers on single session (command orchestration)](#23-automatically-run-multiple-containers-on-single-session)
-	- [2.4. Automatically run multiple containers on multiple sessions (batch + orchestration)](#24-automatically-run-multiple-containers-on-multiple-sessions)
+	- [2.2. Manually run single container on multiple sessions (batch mode)](#22-manually-run-single-container-on-multiple-sessions-batch-mode)
+	- [2.3. Automatically run multiple containers on single session (command orchestration)](#23-automatically-run-multiple-containers-on-single-session-command-orchestration)
+	- [2.4. Automatically run multiple containers on multiple sessions (batch + orchestration)](#24-automatically-run-multiple-containers-on-multiple-sessions-batch--orchestration)
+<!-- /TOC -->
+
 
 ### 1. Installation and Requirements
 #### 1.1. XNAT setup
@@ -16,7 +20,7 @@ Please follow these steps to set up XNAT, import data, and enable container serv
 3. [Import data](https://wiki.xnat.org/documentation/how-to-use-xnat/image-session-upload-methods-in-xnat)
 4. [Container service administration](https://wiki.xnat.org/container-service/container-service-administration-122978855.html)
 ##### Latest versions tested:  
-As of Jan 2022, this software has been tested on:
+As of October 2022, this software has been tested on:
 * XNAT version 1.8.2.2, build: 4 [[installation guide](https://wiki.xnat.org/documentation/getting-started-with-xnat/xnat-installation-guide)]
 * Container Service Plugin 3.1.0 [[link](https://bitbucket.org/xnatdev/container-service/downloads/container-service-3.1.0-fat.jar)]
 * Batch Launch Plugin 0.5.0 [[link](https://bitbucket.org/xnatx/xnatx-batch-launch-plugin/downloads/batch-launch-plugin-0.5.0.jar)]
