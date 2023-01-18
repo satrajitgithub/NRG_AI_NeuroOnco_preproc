@@ -116,13 +116,6 @@ class HOF_Classifier:
         vectorizer.fit(descs)
         self.vectorizer=vectorizer
         print('the length of vocabulary is ',len(vectorizer.vocabulary_))
-     
-    #for logreg/svm output, categorical labels are stored as strings
-    def prepare_training_vectors(self,scans):
-        #labels vector.
-        vectorized_descs=self.gen_bow_vectors(scans)
-        y=[ s['hof_id'] for s in scans ]
-        return vectorized_descs,y
     
     #for a NN output, categorical labels are stored as BOW over vocabulary of class labels.
     def prepare_training_vectors_nn(self,scans,gen_hofids=True):
@@ -160,93 +153,19 @@ class HOF_Classifier:
         if not self.vectorizer: return []
         descs=self.prepare_descs(scans)
         return self.vectorizer.transform(descs).toarray()    
-    
-    def train_nn(self,X,y,test_split,epochs=10,batch_size=10, random_state=1000):
-        X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=test_split,random_state=random_state)
-        input_dim=X_train.shape[1]
-        print('input_dim:',input_dim)
-        model = Sequential()
-        model.add(layers.Dense(36,input_dim=input_dim,activation='relu'))
-        #model.add(layers.Dense(18,activation='relu'))
-        model.add(layers.Dense(len(self._classes),activation='sigmoid'))
-        print('output_dim:',len(self._classes))
-        model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy','categorical_accuracy'])
-        model.summary()
-        self.classifier=model
-        #self.classifier.fit(X_train,y_train,epochs=10,verbose=True,validation_data=(X_test,y_test),batch_size=10)
-        hist=self.classifier.fit(X_train,y_train,epochs=epochs,verbose=True,validation_data=(X_test,y_test),batch_size=batch_size)
-        self.plot_nn_train_history(hist)
-        
-    def plot_nn_train_history(self,history):
-        acc = history.history['acc']
-        val_acc = history.history['val_acc']
-        loss = history.history['loss']
-        val_loss = history.history['val_loss']
-        x = range(1, len(acc) + 1)
 
-        plt.figure(figsize=(12, 5))
-        plt.subplot(1, 2, 1)
-        plt.plot(x, acc, 'b', label='Training acc')
-        plt.plot(x, val_acc, 'r', label='Validation acc')
-        plt.title('Training and validation accuracy')
-        plt.legend()
-        plt.subplot(1, 2, 2)
-        plt.plot(x, loss, 'b', label='Training loss')
-        plt.plot(x, val_loss, 'r', label='Validation loss')
-        plt.title('Training and validation loss')
-        plt.legend()
-        
     def infer_nn(self,scans):
         vecs,ids=self.prepare_training_vectors_nn(scans,False)
         y_fit=self.classifier.predict(vecs)        
         hofids=[ self._classes[np.argmax(y_fit[i])] for i in range(len(y_fit)) ]
-        return hofids        
-        
-    def train_classifier(self,X,y,test_split,random_state=1000):
-        descs_train,descs_test,y_train,y_test=train_test_split(X,y,test_size=test_split,random_state=random_state)
-        #classifier=LogisticRegression()
-        classifier=LinearSVC()
-        #classifier=SVC()
-        classifier.fit(descs_train,y_train)
-        scoreTest=classifier.score(descs_test,y_test)
-        scoreTrain=classifier.score(descs_train,y_train)
-        print('Test accuracy:', scoreTest, " train accuracy:",scoreTrain)        
-        self.classifier=classifier
-        
-        return classifier
-    
-    def _merge_hofids(self,scans,hofids):
-        for s in scans:
-            descr=re.sub(' ','',s['series_description'])
-            cmd="slist qd "+"\"" + descr + "\""
-            try:
-                hof_id=os.popen(cmd).read().split()[1]
-            except:
-                hof_id=""
-            #print(hof_id)
-            s['hof_id']=hof_id
-            # out.value="{}/{}".format(s['series_description'],hof_id)
-        
-    def _predict_classifier(self,X):
-        if not self.classifier: return []
-        return self.classifier.predict(X)
-    
+        return hofids
+
     def predict_classifier_nn(self,scans):
         hofids=self.infer_nn(scans)
         for s,h in zip(scans,hofids):
             s['prediction']=h
         return scans
-    
-    def predict_classifier(self, scans):
-        vectorized_descs=self.gen_bow_vectors(scans)
-        labels=self._predict_classifier(vectorized_descs)
-        for i,s in enumerate(scans):
-            s['hof_id']=labels[i]
-        return scans
-    
-    def is_valid_model(self):
-        return (self.vectorizer and self.classifier)    
-        
+
     def save_model_nn(self,rt):
         pickle.dump(self.vectorizer,open(rt+'.vec','wb'))
         self.classifier.save(rt+'.hd5')
@@ -254,12 +173,6 @@ class HOF_Classifier:
     def load_model_nn(self,rt):
         self.vectorizer=pickle.load(open(rt+'.vec','rb'))
         self.classifier=tf.keras.models.load_model(rt+'.hd5')
-    
-    def save_model(self, file):
-        pickle.dump([self.vectorizer,self.classifier],open(file,'wb'))
-                    
-    def load_model(self, file):
-        self.vectorizer,self.classifier=pickle.load(open(file,'rb'))
 
 
 def get_dcm_acq_params(dcm_file):
