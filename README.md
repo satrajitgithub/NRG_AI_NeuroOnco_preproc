@@ -8,6 +8,8 @@ The workflow i) uses natural language processing and convolutional neural networ
 
 This project is created by the Neuroinformatics Research Group ([NRG](https://nrg.wustl.edu/)) at the Computational Imaging Research Center (Washington University School of Medicine).
 
+**Not intended for clinical use.**
+
 ## Usage
 The workflow can be used either on command-line using [docker](https://www.docker.com/) or using a GUI within [XNAT](https://www.xnat.org/) which is an extensible open-source imaging informatics software platform dedicated to imaging-based research. Both of these running modes require minimal to no setup. Detailed documentations for both can be found at:
 1. [running with docker](documentation/running_with_docker.md)
@@ -15,6 +17,9 @@ The workflow can be used either on command-line using [docker](https://www.docke
 
 For a general overview of each step of the workflow, please refer to our [step-by-step walkthrough](documentation/workflow_step_by_step.md).
 
+## Tutorial videos
+Tutorial videos demonstrating the Docker and XNAT usages of I3CR-WANO are available at:
+[![Docker tutorial](https://img.youtube.com/vi/GIqdy2QG4s0/0.jpg)](https://www.youtube.com/watch?v=GIqdy2QG4s0)
 ## Demonstration
 A live XNAT demonstration of I3CR-WANO can be accessed at: https://demo.xnat.org/ by accessing the `I3CR_WANO_demo` project. The project has containers pulled and command orchestration set up. So, I3CR-WANO can be run in a [single session mode](documentation/running_with_XNAT.md#21-manually-run-multiple-containers-on-single-session), [batch mode](documentation/running_with_XNAT.md#22-manually-run-single-container-on-multiple-sessions-batch-mode), [orchestration mode](documentation/running_with_XNAT.md#23-automatically-run-multiple-containers-on-single-session-command-orchestration), or [batch+orchestration mode](documentation/running_with_XNAT.md#24-automatically-run-multiple-containers-on-multiple-sessions-batch--orchestration).
 
@@ -25,6 +30,3 @@ _Satrajit Chakrabarty, Syed Amaan Abidi, Mina Mousa, Mahati Mokkarala, Isabelle 
 
 ## Contact
 Please open a Github issue or send your questions to satrajit.chakrabarty@wustl.edu if you run into any errors.
-
-## Disclaimer
-**Only intended for research purposes and not for clinical use.**
