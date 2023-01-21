@@ -107,6 +107,28 @@ def train_model(train_image_IDs, batch_size, model, nb_epoch, data_generator):
 
 if __name__ == "__main__":
     
+    '''
+    train_label_file should be of the format:
+
+    location_of_nifti                           class               is_4D
+    location_of_nifti_scan1_slice1.nii.gz       0                   0
+    location_of_nifti_scan1_slice2.nii.gz       0                   0
+    location_of_nifti_scan1_slice1.nii.gz       0                   0
+    etc.
+
+    the scans need to be first pre-processed using the NRG_AI_NeuroOnco_preproc/preprocessing/preprocessing_pipeline.py 
+    so that they are of dimension 256 x 256 x 25
+
+    Details about 'class' column can be found in https://github.com/Svdvoort/DeepDicomSort#running-deepdicomsort
+
+    'is_4D' is typically 0 for all scans but can be 1 in some scans that are 4-dimensional 
+    (e.g., some DWI scans with multiple b-values and potentially b-vectors, and for some PWI-DSC scans, which contain multiple time points.) 
+
+    More details of this can be found at:
+    van der Voort, S.R., Smits, M., Klein, S. et al. DeepDicomSort: An Automatic Sorting Algorithm for Brain Magnetic Resonance Imaging Data. 
+    Neuroinform 19, 159–184 (2021). 
+    https://doi.org/10.1007/s12021-020-09475-7
+    '''
     train_label_file = "/path/to/train/label/file.txt"
     output_folder = "/path/to/output/folder/"
     
