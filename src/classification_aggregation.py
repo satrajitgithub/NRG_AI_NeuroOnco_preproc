@@ -95,8 +95,8 @@ def conditionally_prune_cor_sag_sequences(df, series_class):
     # return df
 
     # Method 2: Based on dicom metadata - check orientation of scan (determined previously) and exclude based on that
-    if series_class in df[~((df.prediction == series_class) & (df.orientation.isin(['Cor', 'Sag'])))]['prediction'].tolist():
-        df = df[~((df.prediction == series_class) & (df.orientation.isin(['Cor', 'Sag'])))]
+    if series_class in df[~((df.prediction == series_class) & (df.orientation.isin(['Cor', 'Sag', '3D'])))]['prediction'].tolist():
+        df = df[~((df.prediction == series_class) & (df.orientation.isin(['Cor', 'Sag', '3D'])))]
     return df
 
 
