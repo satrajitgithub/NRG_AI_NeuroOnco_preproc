@@ -20,6 +20,7 @@ For a general overview of each step of the workflow, please refer to our [step-b
 ## Tutorial videos
 Tutorial videos demonstrating the Docker and XNAT usages of I3CR-WANO are available at:
 [![Docker tutorial](https://img.youtube.com/vi/GIqdy2QG4s0/0.jpg)](https://www.youtube.com/watch?v=GIqdy2QG4s0)
+[![XNAT simple usage](https://img.youtube.com/vi/c7X1isGIkhg/0.jpg)](https://www.youtube.com/watch?v=c7X1isGIkhg)
 ## Demonstration
 A live XNAT demonstration of I3CR-WANO can be accessed at: https://demo.xnat.org/ by accessing the `I3CR_WANO_demo` project. The project has containers pulled and command orchestration set up. So, I3CR-WANO can be run in a [single session mode](documentation/running_with_XNAT.md#21-manually-run-multiple-containers-on-single-session), [batch mode](documentation/running_with_XNAT.md#22-manually-run-single-container-on-multiple-sessions-batch-mode), [orchestration mode](documentation/running_with_XNAT.md#23-automatically-run-multiple-containers-on-single-session-command-orchestration), or [batch+orchestration mode](documentation/running_with_XNAT.md#24-automatically-run-multiple-containers-on-multiple-sessions-batch--orchestration).
 
