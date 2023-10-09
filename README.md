@@ -21,13 +21,11 @@ For a general overview of each step of the workflow, please refer to our [step-b
 Tutorial videos demonstrating the Docker and XNAT usages of I3CR-WANO are available at:
 [![Docker tutorial](https://img.youtube.com/vi/GIqdy2QG4s0/0.jpg)](https://www.youtube.com/watch?v=GIqdy2QG4s0)
 [![XNAT simple usage](https://img.youtube.com/vi/c7X1isGIkhg/0.jpg)](https://www.youtube.com/watch?v=c7X1isGIkhg)
-## Demonstration
-A live XNAT demonstration of I3CR-WANO can be accessed at: https://demo.xnat.org/ by accessing the `I3CR_WANO_demo` project. The project has containers pulled and command orchestration set up. So, I3CR-WANO can be run in a [single session mode](documentation/running_with_XNAT.md#21-manually-run-multiple-containers-on-single-session), [batch mode](documentation/running_with_XNAT.md#22-manually-run-single-container-on-multiple-sessions-batch-mode), [orchestration mode](documentation/running_with_XNAT.md#23-automatically-run-multiple-containers-on-single-session-command-orchestration), or [batch+orchestration mode](documentation/running_with_XNAT.md#24-automatically-run-multiple-containers-on-multiple-sessions-batch--orchestration).
 
 ## Citation
 If you use I3CR-WANO in your work, please cite:
 
-_Satrajit Chakrabarty, Syed Amaan Abidi, Mina Mousa, Mahati Mokkarala, Isabelle Hren, Divya Yadav, Matthew Kelsey, Pamela LaMontagne, John Wood, Michael Adams, Yuzhuo Su, Sherry Thorpe, Caroline Chung, Aristeidis Sotiras, Daniel S. Marcus, **"Integrative Imaging Informatics for Cancer Research: Workflow Automation for Neuro-oncology (I3CR-WANO)."** https://arxiv.org/abs/2210.03151 (2022)._
+_Satrajit Chakrabarty, Syed Amaan Abidi, Mina Mousa, Mahati Mokkarala, Isabelle Hren, Divya Yadav, Matthew Kelsey, Pamela LaMontagne, John Wood, Michael Adams, Yuzhuo Su, Sherry Thorpe, Caroline Chung, Aristeidis Sotiras, Daniel S. Marcus, **"Integrative Imaging Informatics for Cancer Research: Workflow Automation for Neuro-oncology (I3CR-WANO)."** JCO Clinical Cancer Informatics, no. 7, e2200177, 2023. Available: https://doi.org/10.1200/CCI.22.00177._
 
 ## Contact
-Please open a Github issue or send your questions to satrajit.chakrabarty@wustl.edu if you run into any errors.
+Please open a Github issue or send your questions to schakrabarty@mdanderson.org if you run into any errors.
